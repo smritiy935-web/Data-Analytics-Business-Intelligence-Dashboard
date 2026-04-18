@@ -1,7 +1,5 @@
 # InsightFlow — Deep Business Intelligence & Data Analytics
 
-![InsightFlow Banner](C:\Users\nehay\.gemini\antigravity\brain\8effceb2-a9a5-4165-b63d-9b61fd3b57f1\insightflow_hero_banner_1776510691759.png)
-
 ## 🌌 Overview
 
 **InsightFlow** is a premium, full-stack Business Intelligence (BI) platform designed for the modern enterprise. Built with the **MERN stack**, it transforms raw data into meaningful, aesthetic visualizations, empowering teams to make data-driven decisions with confidence.
@@ -74,5 +72,5 @@ To maintain data integrity, please ensure your CSV files follow this structure:
 
 ---
 
-<p align="center"><i>Smriti Dev.</i></p>
+<p align="center"><i>SMRITI YADAV - MERN STACK DEVELOPER</i></p>
 
