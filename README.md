@@ -1,31 +1,12 @@
 # InsightFlow — Deep Business Intelligence & Data Analytics
 
-![InsightFlow Banner](C:\Users\nehay\.gemini\antigravity\brain\05f455ba-45d2-49ac-9c4e-f724bc817a26\insightflow_dashboard_mockup_1776276527485.png)
+![InsightFlow Banner](C:\Users\nehay\.gemini\antigravity\brain\8effceb2-a9a5-4165-b63d-9b61fd3b57f1\insightflow_hero_banner_1776510691759.png)
 
 ## 🌌 Overview
 
 **InsightFlow** is a premium, full-stack Business Intelligence (BI) platform designed for the modern enterprise. Built with the **MERN stack**, it transforms raw data into meaningful, aesthetic visualizations, empowering teams to make data-driven decisions with confidence.
 
 With a focus on **Silent Luxury** design, the interface is glassmorphic, responsive, and meticulously crafted to provide a high-performance analytics experience.
-
----
-
-## 📸 Interface Preview
-
-<div align="center">
-  <table border="0">
-    <tr>
-      <td>
-        <p align="center"><b>Analytics View</b></p>
-        <img src="C:\Users\nehay\.gemini\antigravity\brain\05f455ba-45d2-49ac-9c4e-f724bc817a26\insightflow_analytics_preview_1776276563229.png" width="400" />
-      </td>
-      <td>
-        <p align="center"><b>Authentication Portal</b></p>
-        <img src="C:\Users\nehay\.gemini\antigravity\brain\05f455ba-45d2-49ac-9c4e-f724bc817a26\insightflow_login_page_1776276542809.png" width="400" />
-      </td>
-    </tr>
-  </table>
-</div>
 
 ---
 
@@ -62,12 +43,13 @@ With a focus on **Silent Luxury** design, the interface is glassmorphic, respons
 ### 2. Environment Configuration
 Create a `.env` file in the `/server` directory:
 ```env
-PORT=5000
-MONGODB_URI=your_mongodb_uri
+PORT=5081
+MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_ultra_secret_key
 ```
 
 ### 3. Installation
+
 **Backend Setup:**
 ```bash
 cd server
@@ -92,5 +74,5 @@ To maintain data integrity, please ensure your CSV files follow this structure:
 
 ---
 
-<p align="center"><i>Crafted with precision by Smriti Dev.</i></p>
-"# Data-Analytics-Business-Intelligence-Dashboard" 
+<p align="center"><i>Smriti Dev.</i></p>
+
