@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5081',
+        target: 'https://data-analytics-business-intelligence-45kf.onrender.com',
         changeOrigin: true,
       },
     },
