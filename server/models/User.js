@@ -13,12 +13,18 @@ const userSchema = mongoose.Schema(
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
-  console.log('Hashing password...');
-  const salt = await bcrypt.genSalt(8); // Slightly faster for dev
-  this.password = await bcrypt.hash(this.password, salt);
-  console.log('Password hashed successfully');
+  
+  try {
+    console.log('Hashing password...');
+    const salt = await bcrypt.genSalt(8);
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log('Password hashed successfully');
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const SystemSettings = require('../models/SystemSettings');
 
 const protect = async (req, res, next) => {
   let token;
@@ -11,12 +12,12 @@ const protect = async (req, res, next) => {
       req.user = await User.findById(decoded.id).select('-password');
       next();
     } catch (error) {
-      res.status(401).json({ message: 'Not authorized, token failed' });
+      return res.status(401).json({ message: 'Not authorized, token failed' });
     }
   }
 
   if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 
@@ -28,4 +29,15 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+const checkMaintenance = async (req, res, next) => {
+  const settings = await SystemSettings.findOne();
+  if (settings && settings.maintenanceMode && (!req.user || req.user.role !== 'admin')) {
+    return res.status(503).json({ 
+      message: settings.announcement || 'System is currently under maintenance. Please try again later.',
+      maintenance: true 
+    });
+  }
+  next();
+};
+
+module.exports = { protect, admin, checkMaintenance };

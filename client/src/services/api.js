@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://data-analytics-business-intelligence-45kf.onrender.com/api',
+  baseURL: '/api',
 });
 
 // Add token to headers and fix URL pathing

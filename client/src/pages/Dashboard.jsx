@@ -52,14 +52,19 @@ const Dashboard = () => {
   const { filters } = useFilters();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [maintenance, setMaintenance] = useState(null);
 
   const fetchDashboardData = async () => {
     setLoading(true);
+    setMaintenance(null);
     try {
       const { data: response } = await api.get("/data", { params: filters });
       setData(response.data || []);
     } catch (err) {
       console.error("Dashboard fetch error:", err);
+      if (err.response?.status === 503) {
+        setMaintenance(err.response.data.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -105,12 +110,28 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 rounded-xl text-[10px] font-bold uppercase tracking-widest border border-emerald-100/50 dark:border-emerald-500/10">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            Status: LIVE
+          <div className={`hidden sm:flex items-center gap-2 px-3 py-2 ${maintenance ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/10' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/10'} rounded-xl text-[10px] font-bold uppercase tracking-widest border`}>
+            <div className={`w-1.5 h-1.5 rounded-full ${maintenance ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></div>
+            Status: {maintenance ? 'MAINTENANCE' : 'LIVE'}
           </div>
         </div>
       </div>
+
+      {maintenance && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex items-center gap-4"
+        >
+          <div className="p-2 bg-amber-500 rounded-lg text-white">
+            <AlertCircle size={20} />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-amber-500 uppercase tracking-widest">System Maintenance Active</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{maintenance}</p>
+          </div>
+        </motion.div>
+      )}
 
       <FilterBar />
 

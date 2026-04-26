@@ -13,12 +13,14 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Upload from "./pages/Upload";
 import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import Profile from "./pages/Profile";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Chatbot from "./components/Chatbot";
 import { FilterProvider } from "./context/FilterContext";
 import CommandPalette from "./components/dashboard/CommandPalette";
+import AdminLayout from "./components/admin/AdminLayout";
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -49,9 +51,10 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <FilterProvider>
-          <Router>
+          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/admin-login" element={<AdminLogin />} />
               <Route path="/register" element={<Register />} />
 
               <Route
@@ -77,12 +80,19 @@ function App() {
               />
 
               <Route
-                path="/admin"
+                path="/admin/*"
                 element={
                   <ProtectedRoute adminOnly={true}>
-                    <Layout>
-                      <Admin />
-                    </Layout>
+                    <AdminLayout>
+                      <Routes>
+                        <Route path="/" element={<Admin />} />
+                        <Route path="/users" element={<Admin />} />
+                        <Route path="/data" element={<div className="p-8 text-center text-slate-500">Data Pipeline Management Under Construction</div>} />
+                        <Route path="/logs" element={<div className="p-8 text-center text-slate-500">System Logs Node Under Construction</div>} />
+                        <Route path="/stats" element={<div className="p-8 text-center text-slate-500">Advanced Analytics Under Construction</div>} />
+                        <Route path="/settings" element={<div className="p-8 text-center text-slate-500">Global System Settings Under Construction</div>} />
+                      </Routes>
+                    </AdminLayout>
                   </ProtectedRoute>
                 }
               />
