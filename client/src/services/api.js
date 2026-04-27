@@ -1,46 +1,59 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Get API URL from environment variables
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Base URL from environment variable (NO fallback)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+if (!API_BASE_URL) {
+  throw new Error("VITE_API_URL is not defined. Please set it in environment variables.");
+}
+
+// Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
-  withCredentials: true, // Required for cross-origin cookies if used
+  withCredentials: true, // enable cookies if backend uses them
 });
 
-// Request interceptor for adding JWT token
+// 🔐 Request Interceptor (Attach JWT Token)
 api.interceptors.request.use(
   (config) => {
-    const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
-      try {
-        const { token } = JSON.parse(userInfo);
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      } catch (error) {
-        console.error('Error parsing user info from localStorage', error);
+    try {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+      if (userInfo?.token) {
+        config.headers.Authorization = `Bearer ${userInfo.token}`;
       }
+    } catch (error) {
+      console.error("Invalid userInfo in localStorage");
     }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor for handling common errors (like 401 Unauthorized)
+// ⚠️ Response Interceptor (Handle Errors Globally)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Optional: Clear storage and redirect to login if token is expired/invalid
-      // localStorage.removeItem('userInfo');
-      // window.location.href = '/login';
+    if (error.response) {
+      const status = error.response.status;
+
+      if (status === 401) {
+        // Token expired / invalid
+        localStorage.removeItem("userInfo");
+        window.location.href = "/login";
+      }
+
+      if (status === 500) {
+        console.error("Server error:", error.response.data);
+      }
+    } else {
+      console.error("Network error:", error.message);
     }
+
     return Promise.reject(error);
   }
 );
