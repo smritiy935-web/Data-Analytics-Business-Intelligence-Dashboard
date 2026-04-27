@@ -31,8 +31,8 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className="w-72 h-screen bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800">
-      <div className="p-8">
+    <div className="w-64 h-screen bg-slate-950 text-slate-300 flex flex-col border-r border-slate-800">
+      <div className="p-6">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-900/20">
             <ShieldCheck size={24} />
@@ -67,7 +67,7 @@ const AdminSidebar = () => {
         </nav>
       </div>
 
-      <div className="mt-auto p-6 space-y-4">
+      <div className="mt-auto p-4 space-y-4">
         <Link 
           to="/"
           className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:text-white transition-all border border-slate-800"

@@ -68,8 +68,6 @@ const getAdminAnalytics = async (req, res) => {
 };
 
 // @desc    Update system settings
-// @route   PUT /api/admin/settings
-// @access  Private/Admin
 const updateSystemSettings = async (req, res) => {
   const { maintenanceMode, announcement, siteName } = req.body;
   
@@ -81,6 +79,20 @@ const updateSystemSettings = async (req, res) => {
     settings.siteName = siteName !== undefined ? siteName : settings.siteName;
     
     const updatedSettings = await settings.save();
+
+    // Broadcast the announcement to all connected users
+    if (req.io) {
+      console.log('📢 ATTEMPTING BROADCAST:', announcement);
+      req.io.emit('system_notification', {
+        message: announcement || 'System Update',
+        timestamp: new Date(),
+        type: 'announcement'
+      });
+      console.log('✅ BROADCAST SENT SUCCESSFULLY');
+    } else {
+      console.error('❌ SOCKET.IO NOT FOUND ON REQ OBJECT');
+    }
+
     res.json(updatedSettings);
   } else {
     const newSettings = await SystemSettings.create({

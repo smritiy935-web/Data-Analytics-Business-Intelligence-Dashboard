@@ -15,6 +15,7 @@ import {
   X,
   MessageSquare
 } from "lucide-react";
+import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
@@ -69,11 +70,46 @@ const DashboardHeader = () => {
     return () => clearTimeout(timer);
   }, [localSearch]);
 
-  useEffect(() => {
-    setLocalSearch(filters.search);
-  }, [filters.search]);
-
   const initials = user?.name ? user.name.charAt(0).toUpperCase() : "U";
+
+  // Real-time notifications via Socket.io
+  useEffect(() => {
+    const socketUrl = import.meta.env.VITE_API_URL 
+      ? import.meta.env.VITE_API_URL.replace('/api', '') 
+      : 'http://localhost:5000';
+    
+    const socket = io(socketUrl, {
+      transports: ['websocket', 'polling']
+    });
+
+    socket.on('connect', () => {
+      console.log('✅ Connected to Notification Server:', socket.id);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('❌ Socket Connection Error:', err.message);
+    });
+
+    socket.on('system_notification', (data) => {
+      console.log('📩 New Notification Received:', data);
+      const newNotification = {
+        id: Date.now(),
+        title: "Admin Announcement",
+        desc: data.message,
+        type: "info",
+        time: "Just now",
+      };
+      
+      setNotifications(prev => [newNotification, ...prev]);
+      
+      // Optional: Play a sound or show a toast
+      console.log('New System Notification received');
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <header className="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl sticky top-0 z-40">
