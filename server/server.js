@@ -4,19 +4,19 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const path = require('path');
-
-if (!process.env.JWT_SECRET) {
-  console.error('CRITICAL: JWT_SECRET is not defined in .env');
-}
-if (!process.env.MONGO_URI) {
-  console.error('CRITICAL: MONGO_URI is not defined in .env');
-}
-
-const authRoutes = require('./routes/authRoutes');
-const dataRoutes = require('./routes/dataRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+
+// Validate critical environment variables
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET', 'FRONTEND_URL'];
+requiredEnv.forEach((env) => {
+  if (!process.env[env]) {
+    console.error(`CRITICAL ERROR: ${env} is not defined in environment variables.`);
+    process.exit(1);
+  }
+});
+
+const app = express();
+const server = http.createServer(app);
 
 // CORS Configuration
 const allowedOrigins = [
@@ -25,69 +25,90 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"]
-  },
-});
-
-// Connect to Database
-connectDB();
-
-// Middleware
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
+    
     if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-      return callback(null, true);
+      callback(null, true);
     } else {
-      return callback(new Error('CORS policy violation'), false);
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  optionsSuccessStatus: 200
-}));
-app.use(express.json());
+};
 
-// Log requests
+// Apply Middleware
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Request Logging
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
+  if (process.env.NODE_ENV !== 'test') {
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
+    });
+  }
   next();
 });
 
-// Health check
-app.get('/', (req, res) => res.send('API is running...'));
+// Socket.io Configuration
+const io = new Server(server, {
+  cors: corsOptions,
+  pingTimeout: 60000,
+  transports: ['websocket', 'polling'],
+});
 
-// Pass io to request object for use in controllers
+// Connect to Database
+connectDB();
+
+// Pass io to request object
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/data', dataRoutes);
-app.use('/api/admin', adminRoutes);
+// Health check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'API is running', timestamp: new Date() });
+});
 
-// Error Handling Middleware
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/data', require('./routes/dataRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
+// Error Handling
 app.use(notFound);
 app.use(errorHandler);
 
-// Socket.io connection
+// Socket.io connection logic
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('Socket Connected:', socket.id);
+  
+  socket.on('join_room', (room) => {
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
+  });
+
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    console.log('Socket Disconnected:', socket.id);
   });
 });
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`
+🚀 Server initialized!
+📡 Mode: ${process.env.NODE_ENV || 'development'}
+🔌 Port: ${PORT}
+🌍 Frontend URL: ${process.env.FRONTEND_URL}
+  `);
 });
