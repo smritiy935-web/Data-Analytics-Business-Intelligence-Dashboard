@@ -1,10 +1,18 @@
 import axios from "axios";
 
-// Base URL from environment variable (NO fallback)
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+// Base URL from environment variable
+let API_BASE_URL = import.meta.env.VITE_API_URL;
 
 if (!API_BASE_URL) {
-  throw new Error("VITE_API_URL is not defined. Please set it in environment variables.");
+  // Fallback for local development if env is missing
+  API_BASE_URL = 'http://localhost:5000/api';
+}
+
+// Auto-fix: Ensure the URL ends with /api
+if (!API_BASE_URL.endsWith('/api') && !API_BASE_URL.endsWith('/api/')) {
+  API_BASE_URL = API_BASE_URL.endsWith('/') 
+    ? `${API_BASE_URL}api` 
+    : `${API_BASE_URL}/api`;
 }
 
 // Create axios instance
