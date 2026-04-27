@@ -87,6 +87,11 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'API is running', timestamp: new Date() });
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('🚀 InsightFlow API is running... Use /api for endpoints or /health for status.');
+});
+
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/data', require('./routes/dataRoutes'));
