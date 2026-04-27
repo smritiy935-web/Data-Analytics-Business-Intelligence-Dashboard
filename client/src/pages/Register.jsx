@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Mail, Lock, User, Loader2, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Mail, Lock, User, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,6 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -18,8 +20,9 @@ const Register = () => {
     setLoading(true);
     setError("");
     try {
-      await register(name, email, password);
-      navigate("/");
+      await register(name.trim(), email.trim(), password.trim());
+      setSuccess(true);
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -28,114 +31,122 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 font-sans relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[120px]"></div>
+      </div>
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-[340px] w-full relative z-10"
       >
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
-              Join InsightFlow
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
-              Start analyzing your business data today.
+        <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-slate-800 shadow-2xl flex flex-col p-5 relative overflow-hidden">
+          {/* Subtle Top Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
+
+          <div className="text-center mb-5">
+            <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
+              Get Started
+            </h1>
+            <p className="text-slate-500 text-[11px]">
+              Start analyzing data today
             </p>
           </div>
 
-          {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-xl text-sm mb-6 border border-red-100">
-              {error}
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-red-500/10 border border-red-500/20 text-red-400 p-2.5 rounded-xl text-[11px] font-medium mb-5 flex items-center gap-2"
+              >
+                <AlertCircle size={14} className="shrink-0" />
+                {error}
+              </motion.div>
+            )}
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-2.5 rounded-xl text-[11px] font-medium mb-5 flex items-center gap-2"
+              >
+                <CheckCircle2 size={14} />
+                Account Created! Redirecting...
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 ml-1">
-                Full Name
-              </label>
-              <div className="relative">
-                <User
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  size={18}
-                />
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-primary-500 transition-all text-slate-900 dark:text-white"
-                  placeholder="John Doe"
-                />
-              </div>
+            <div className="relative group">
+              <User
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors"
+                size={17}
+              />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-11 pr-4 py-2.5 bg-slate-950/50 border border-slate-800 rounded-xl outline-none focus:ring-1 focus:ring-primary-500/50 transition-all text-white text-sm placeholder:text-slate-700"
+                placeholder="Full Name"
+              />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 ml-1">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  size={18}
-                />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-primary-500 transition-all text-slate-900 dark:text-white"
-                  placeholder="name@company.com"
-                />
-              </div>
+            <div className="relative group">
+              <Mail
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors"
+                size={17}
+              />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-11 pr-4 py-2.5 bg-slate-950/50 border border-slate-800 rounded-xl outline-none focus:ring-1 focus:ring-primary-500/50 transition-all text-white text-sm placeholder:text-slate-700"
+                placeholder="Email Address"
+              />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 ml-1">
-                Password
-              </label>
-              <div className="relative">
-                <Lock
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  size={18}
-                />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-primary-500 transition-all text-slate-900 dark:text-white"
-                  placeholder="••••••••"
-                />
-              </div>
+            <div className="relative group">
+              <Lock
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors"
+                size={17}
+              />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-11 pr-4 py-2.5 bg-slate-950/50 border border-slate-800 rounded-xl outline-none focus:ring-1 focus:ring-primary-500/50 transition-all text-white text-sm placeholder:text-slate-700"
+                placeholder="Create Password"
+              />
             </div>
 
             <button
-              disabled={loading}
+              disabled={loading || success}
               type="submit"
-              className="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg shadow-primary-200 dark:shadow-none transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg transition-all flex items-center justify-center gap-2"
             >
               {loading ? (
-                <Loader2 className="animate-spin" size={20} />
+                <Loader2 className="animate-spin" size={18} />
               ) : (
-                <>
-                  Create Account
-                  <ArrowRight size={18} />
-                </>
+                "Create Account"
               )}
             </button>
           </form>
 
-          <p className="text-center mt-8 text-sm text-slate-500 dark:text-slate-400">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-primary-600 hover:text-primary-700 font-semibold underline underline-offset-4"
-            >
-              Log in
-            </Link>
-          </p>
+          <div className="mt-5 pt-4 border-t border-slate-800/60 text-center">
+            <p className="text-[10px] text-slate-500">
+              Already have an account?{" "}
+              <Link to="/login" className="text-primary-500 font-bold hover:text-primary-400 transition-colors">
+                Log in
+              </Link>
+            </p>
+          </div>
         </div>
       </motion.div>
     </div>

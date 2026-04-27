@@ -109,10 +109,10 @@ const Admin = () => {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <span className="text-primary-500">ROOT</span> COMMAND CENTER
+          <h1 className="text-2xl font-bold text-white tracking-tight">
+            Admin Dashboard
           </h1>
-          <p className="text-slate-400 text-sm mt-1">System-wide administrative control and surveillance dashboard.</p>
+          <p className="text-slate-400 text-sm mt-1">System-wide administrative control and management console.</p>
         </div>
         <div className="flex gap-3">
           <div className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-xl flex items-center gap-2 text-xs font-mono">

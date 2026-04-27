@@ -38,7 +38,9 @@ const Layout = ({ children }) => {
       <DashboardSidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader />
-        <main className="flex-1 overflow-y-auto px-6 pb-4 lg:px-8 lg:pb-6">{children}</main>
+        <main className="flex-1 overflow-y-auto px-2 pb-2 lg:px-3 lg:pb-3">
+          {children}
+        </main>
       </div>
       <Chatbot />
       <CommandPalette />
@@ -51,7 +53,9 @@ function App() {
     <AuthProvider>
       <ThemeProvider>
         <FilterProvider>
-          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <Router
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          >
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/admin-login" element={<AdminLogin />} />
@@ -87,10 +91,38 @@ function App() {
                       <Routes>
                         <Route path="/" element={<Admin />} />
                         <Route path="/users" element={<Admin />} />
-                        <Route path="/data" element={<div className="p-8 text-center text-slate-500">Data Pipeline Management Under Construction</div>} />
-                        <Route path="/logs" element={<div className="p-8 text-center text-slate-500">System Logs Node Under Construction</div>} />
-                        <Route path="/stats" element={<div className="p-8 text-center text-slate-500">Advanced Analytics Under Construction</div>} />
-                        <Route path="/settings" element={<div className="p-8 text-center text-slate-500">Global System Settings Under Construction</div>} />
+                        <Route
+                          path="/data"
+                          element={
+                            <div className="p-8 text-center text-slate-500">
+                              Data Pipeline Management Under Construction
+                            </div>
+                          }
+                        />
+                        <Route
+                          path="/logs"
+                          element={
+                            <div className="p-8 text-center text-slate-500">
+                              System Logs Node Under Construction
+                            </div>
+                          }
+                        />
+                        <Route
+                          path="/stats"
+                          element={
+                            <div className="p-8 text-center text-slate-500">
+                              Advanced Analytics Under Construction
+                            </div>
+                          }
+                        />
+                        <Route
+                          path="/settings"
+                          element={
+                            <div className="p-8 text-center text-slate-500">
+                              Global System Settings Under Construction
+                            </div>
+                          }
+                        />
                       </Routes>
                     </AdminLayout>
                   </ProtectedRoute>

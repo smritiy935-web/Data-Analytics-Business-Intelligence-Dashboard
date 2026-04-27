@@ -84,17 +84,17 @@ const Profile = () => {
         )}
       </AnimatePresence>
 
-      <div className="relative h-64 rounded-[2rem] overflow-hidden mb-8 shadow-2xl">
+      <div className="relative h-40 rounded-3xl overflow-hidden mb-4 shadow-2xl">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-indigo-600 to-purple-700">
           <div className="absolute inset-0 opacity-30 bg-grid-white/[0.1]"></div>
         </div>
       </div>
 
       <div className="px-4 sm:px-8">
-        <div className="flex flex-col lg:flex-row gap-8 -mt-32 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8 -mt-24 relative z-10">
           
-          <div className="lg:w-80 space-y-6">
-            <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-6 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl">
+          <div className="lg:w-64 space-y-6">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl">
               <div className="relative mb-6">
                 <div className="w-full aspect-square rounded-[1.5rem] bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-6xl font-black text-primary-600 shadow-inner overflow-hidden relative group">
                    {isUploading ? (
@@ -115,7 +115,7 @@ const Profile = () => {
               </div>
 
               <div className="text-center space-y-1 mb-6">
-                <h2 className="text-2xl font-bold capitalize">{user?.name}</h2>
+                <h2 className="text-xl font-bold capitalize">{user?.name}</h2>
                 <p className="text-sm font-medium text-slate-500 uppercase tracking-widest">{user?.role}</p>
               </div>
 
@@ -154,8 +154,8 @@ const Profile = () => {
             <AnimatePresence mode="wait">
               {activeTab === "overview" && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-8">
-                  <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
-                    <h3 className="text-xl font-bold mb-6">Account Settings</h3>
+                  <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+                    <h3 className="text-lg font-bold mb-6">Account Settings</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-4">
                             <div>
@@ -183,8 +183,8 @@ const Profile = () => {
 
               {activeTab === "security" && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                  <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <h3 className="text-xl font-bold mb-6">Security & Authentication</h3>
+                  <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <h3 className="text-lg font-bold mb-6">Security & Authentication</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className={`p-6 rounded-[1.5rem] border transition-all cursor-pointer ${bioActive ? 'border-primary-500 bg-primary-50/10' : 'border-slate-100 dark:border-slate-800 hover:border-primary-500/50'}`} onClick={() => { setBioActive(!bioActive); triggerToast(bioActive ? "Biometric Auth Disabled" : "Biometric Auth Enabled!"); }}>
                          <Fingerprint className={`${bioActive ? 'text-primary-500' : 'text-primary-600'} mb-4`} size={32} />
@@ -205,8 +205,8 @@ const Profile = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-                    <h3 className="text-xl font-bold mb-6">Change Password</h3>
+                  <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <h3 className="text-lg font-bold mb-6">Change Password</h3>
                     <div className="space-y-4 max-w-md">
                        <div>
                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-1">Current Password</label>

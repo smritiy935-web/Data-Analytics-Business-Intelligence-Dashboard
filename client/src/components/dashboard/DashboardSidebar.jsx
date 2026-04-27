@@ -60,8 +60,8 @@ const DashboardSidebar = () => {
       <motion.aside
         initial={false}
         animate={{ 
-          width: collapsed ? 80 : 256,
-          x: isMobileOpen || window.innerWidth >= 1024 ? 0 : -256
+          width: collapsed ? 64 : 224,
+          x: isMobileOpen || window.innerWidth >= 1024 ? 0 : -224
         }}
         transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
         className={`fixed lg:sticky top-0 left-0 h-screen bg-white dark:bg-slate-900 flex flex-col border-r border-slate-200 dark:border-slate-800 overflow-hidden shrink-0 z-[60] lg:z-40 transition-colors ${!isMobileOpen ? 'hidden lg:flex' : 'flex'}`}

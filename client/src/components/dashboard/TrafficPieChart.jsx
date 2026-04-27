@@ -16,15 +16,15 @@ const TrafficPieChart = ({ dynamicData }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm"
+      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm"
     >
-      <h3 className="text-lg font-bold mb-1">Segment Distribution</h3>
-      <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Visual breakdown by category</p>
+      <h3 className="text-sm font-bold mb-0.5">Segment Distribution</h3>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Category breakdown</p>
       
-      <div className="h-[250px] w-full">
+      <div className="h-[180px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-            <Pie data={data} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={5} dataKey="value" stroke="none">
+            <Pie data={data} cx="50%" cy="50%" innerRadius={50} outerRadius={70} paddingAngle={5} dataKey="value" stroke="none">
               {data.map((entry, i) => (
                 <Cell key={i} fill={entry.color ? entry.color.replace('hsl(var(--chart-blue))', '#3b82f6').replace('hsl(var(--chart-purple))', '#a855f7').replace('hsl(var(--chart-green))', '#10b981') : '#3b82f6'} />
               ))}

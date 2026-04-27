@@ -11,7 +11,7 @@ const AdminLayout = ({ children }) => {
       
       <div className="flex-1 flex flex-col min-w-0">
         {/* Admin Top Header */}
-        <header className="h-20 bg-slate-950/50 backdrop-blur-md border-b border-slate-900 px-8 flex items-center justify-between sticky top-0 z-10">
+        <header className="h-16 bg-slate-950/50 backdrop-blur-md border-b border-slate-900 px-6 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4 flex-1">
             <div className="relative max-w-md w-full group">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-500 transition-colors" size={18} />
@@ -44,7 +44,7 @@ const AdminLayout = ({ children }) => {
         </header>
 
         {/* Admin Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950 to-slate-950 p-8">
+        <main className="flex-1 overflow-y-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950 to-slate-950 p-4 lg:p-6">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>

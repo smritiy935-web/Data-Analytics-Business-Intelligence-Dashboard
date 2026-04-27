@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { DollarSign, Users, TrendingUp, ShoppingCart, ArrowUpRight, Download } from "lucide-react";
+import {
+  DollarSign,
+  Users,
+  TrendingUp,
+  ShoppingCart,
+  ArrowUpRight,
+  Download,
+} from "lucide-react";
 import KpiCard from "../components/dashboard/KpiCard";
 import RevenueChart from "../components/dashboard/RevenueChart";
 import TrafficPieChart from "../components/dashboard/TrafficPieChart";
@@ -79,13 +86,18 @@ const Dashboard = () => {
     const headers = ["Category", "Label", "Value", "Date"];
     const csvContent = [
       headers.join(","),
-      ...data.map(row => [row.category, `"${row.label}"`, row.value, row.date].join(","))
+      ...data.map((row) =>
+        [row.category, `"${row.label}"`, row.value, row.date].join(","),
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", `Data_Export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `Data_Export_${new Date().toISOString().split("T")[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -102,23 +114,28 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            Executive Summary
+            Performance Overview
             <ArrowUpRight className="text-primary-500" size={20} />
           </h1>
           <p className="text-xs text-slate-500 font-medium tracking-tight">
-            Real-time performance metrics and business analytics.
+            Real-time insights into system performance, user activity, and key
+            metrics
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className={`hidden sm:flex items-center gap-2 px-3 py-2 ${maintenance ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/10' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/10'} rounded-xl text-[10px] font-bold uppercase tracking-widest border`}>
-            <div className={`w-1.5 h-1.5 rounded-full ${maintenance ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></div>
-            Status: {maintenance ? 'MAINTENANCE' : 'LIVE'}
+          <div
+            className={`hidden sm:flex items-center gap-2 px-3 py-2 ${maintenance ? "bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border-amber-100/50 dark:border-amber-500/10" : "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/10"} rounded-xl text-[10px] font-bold uppercase tracking-widest border`}
+          >
+            <div
+              className={`w-1.5 h-1.5 rounded-full ${maintenance ? "bg-amber-500" : "bg-emerald-500"} animate-pulse`}
+            ></div>
+            Status: {maintenance ? "MAINTENANCE" : "LIVE"}
           </div>
         </div>
       </div>
 
       {maintenance && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex items-center gap-4"
@@ -127,8 +144,12 @@ const Dashboard = () => {
             <AlertCircle size={20} />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-amber-500 uppercase tracking-widest">System Maintenance Active</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">{maintenance}</p>
+            <h4 className="text-sm font-bold text-amber-500 uppercase tracking-widest">
+              System Maintenance Active
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {maintenance}
+            </p>
           </div>
         </motion.div>
       )}

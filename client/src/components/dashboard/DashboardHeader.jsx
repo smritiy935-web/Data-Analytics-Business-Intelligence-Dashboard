@@ -13,7 +13,7 @@ import {
   Command,
   Menu,
   X,
-  MessageSquare
+  MessageSquare,
 } from "lucide-react";
 import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
@@ -74,24 +74,24 @@ const DashboardHeader = () => {
 
   // Real-time notifications via Socket.io
   useEffect(() => {
-    const socketUrl = import.meta.env.VITE_API_URL 
-      ? import.meta.env.VITE_API_URL.replace('/api', '') 
-      : 'http://localhost:5000';
-    
+    const socketUrl = import.meta.env.VITE_API_URL
+      ? import.meta.env.VITE_API_URL.replace("/api", "")
+      : "http://localhost:5000";
+
     const socket = io(socketUrl, {
-      transports: ['websocket', 'polling']
+      transports: ["websocket", "polling"],
     });
 
-    socket.on('connect', () => {
-      console.log('✅ Connected to Notification Server:', socket.id);
+    socket.on("connect", () => {
+      console.log("✅ Connected to Notification Server:", socket.id);
     });
 
-    socket.on('connect_error', (err) => {
-      console.error('❌ Socket Connection Error:', err.message);
+    socket.on("connect_error", (err) => {
+      console.error("❌ Socket Connection Error:", err.message);
     });
 
-    socket.on('system_notification', (data) => {
-      console.log('📩 New Notification Received:', data);
+    socket.on("system_notification", (data) => {
+      console.log("📩 New Notification Received:", data);
       const newNotification = {
         id: Date.now(),
         title: "Admin Announcement",
@@ -99,11 +99,11 @@ const DashboardHeader = () => {
         type: "info",
         time: "Just now",
       };
-      
-      setNotifications(prev => [newNotification, ...prev]);
-      
+
+      setNotifications((prev) => [newNotification, ...prev]);
+
       // Optional: Play a sound or show a toast
-      console.log('New System Notification received');
+      console.log("New System Notification received");
     });
 
     return () => {
@@ -116,33 +116,35 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-4">
         {/* Mobile Menu Toggle */}
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent("toggle-sidebar"))}
+          onClick={() =>
+            window.dispatchEvent(new CustomEvent("toggle-sidebar"))
+          }
           className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
         >
           <Menu size={20} />
         </button>
 
         <div className="flex-1 max-w-xl hidden md:block">
-        <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
-          <input
-            placeholder="Global search - type to filter data..."
-            value={localSearch}
-            onChange={(e) => setLocalSearch(e.target.value)}
-            className="w-full h-10 pl-10 pr-16 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
-          />
-          <button
-            onClick={() =>
-              window.dispatchEvent(new CustomEvent("open-command-palette"))
-            }
-            className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-            title="Open Command Palette"
-          >
-            <Command size={10} /> K
-          </button>
+          <div className="relative group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
+            <input
+              placeholder="Global search - type to filter data..."
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              className="w-full h-10 pl-10 pr-16 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
+            />
+            <button
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("open-command-palette"))
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 px-1.5 py-0.5 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+              title="Open Command Palette"
+            >
+              <Command size={10} /> K
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
       <div className="flex items-center gap-3">
         <button
@@ -168,7 +170,9 @@ const DashboardHeader = () => {
           </button>
 
           <button
-            onClick={() => window.dispatchEvent(new CustomEvent("toggle-chatbot"))}
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("toggle-chatbot"))
+            }
             className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-all relative group"
             title="AI Assistant"
           >

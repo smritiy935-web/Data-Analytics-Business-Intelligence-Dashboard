@@ -25,9 +25,9 @@ const RevenueChart = ({ dynamicData, isFiltered }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm"
+      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 shadow-sm"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">Revenue Intelligence</h3>
           <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -57,7 +57,7 @@ const RevenueChart = ({ dynamicData, isFiltered }) => {
           </div>
         </div>
       </div>
-      <div className="h-[300px]">
+      <div className="h-[200px]">
         {isFiltered && dynamicData.length === 0 ? (
           <div className="h-full flex items-center justify-center text-slate-400 font-medium italic">
             No results match your current filters.

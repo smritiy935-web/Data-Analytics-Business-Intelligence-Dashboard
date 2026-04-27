@@ -76,7 +76,11 @@ const Upload = () => {
     setUploading(true);
     setStatus(null);
     try {
-      const { data } = await api.post("/data/upload", formData);
+      const { data } = await api.post("/data/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setStatus("success");
       setMessage(data.message || "Data successfully ingested into the engine.");
       setFile(null);
@@ -95,7 +99,7 @@ const Upload = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-            Data Intake Center <Database className="text-primary-600" />
+            Data Integration <Database className="text-primary-600" />
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">
             Power your dashboard by ingesting raw business intelligence.
@@ -114,17 +118,17 @@ const Upload = () => {
             onDragLeave={handleDrag}
             onDragOver={handleDrag}
             onDrop={handleDrop}
-            className={`relative group bg-white dark:bg-slate-900 border-2 border-dashed ${dragActive ? "border-primary-500 bg-primary-50/10" : "border-slate-200 dark:border-slate-800"} rounded-[2.5rem] p-12 text-center transition-all duration-300 shadow-xl shadow-slate-200/50 dark:shadow-none mb-8`}
+            className={`relative group bg-white dark:bg-slate-900 border-2 border-dashed ${dragActive ? "border-primary-500 bg-primary-50/10" : "border-slate-200 dark:border-slate-800"} rounded-[2rem] p-6 text-center transition-all duration-300 shadow-xl shadow-slate-200/50 dark:shadow-none mb-4`}
           >
             {!file ? (
-              <div className="py-10">
-                <div className="w-20 h-20 bg-primary-600 text-white rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-primary-500/40 group-hover:scale-110 transition-transform duration-500">
+              <div className="py-4">
+                <div className="w-20 h-20 bg-primary-600 text-white rounded-[2rem] flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-primary-500/40 group-hover:scale-110 transition-transform duration-500">
                   <UploadIcon size={32} />
                 </div>
                 <h3 className="text-2xl font-black mb-2 text-slate-900 dark:text-white">
-                  Push to Insight Engine
+                  Upload Source File
                 </h3>
-                <p className="text-slate-400 font-medium mb-8">
+                <p className="text-slate-400 font-medium mb-4">
                   Drag and drop your spreadsheet or click to browse
                 </p>
                 <input
@@ -138,7 +142,7 @@ const Upload = () => {
                   onClick={() => fileInputRef.current.click()}
                   className="px-10 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-all shadow-xl shadow-slate-200 dark:shadow-none"
                 >
-                  Choose Source File
+                  Select Dataset
                 </button>
               </div>
             ) : (
@@ -169,7 +173,7 @@ const Upload = () => {
                       <Loader2 className="animate-spin" size={20} />
                     ) : (
                       <>
-                        Commit to Database <ArrowRight size={20} />
+                        Process & Sync <ArrowRight size={20} />
                       </>
                     )}
                   </button>

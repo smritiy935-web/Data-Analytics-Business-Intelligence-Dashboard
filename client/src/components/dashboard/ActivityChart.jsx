@@ -15,13 +15,13 @@ const ActivityChart = () => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: 0.5 }}
-    className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm"
+    className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm"
   >
-    <h3 className="text-base font-semibold mb-1">Weekly Activity</h3>
-    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-      Users & sessions this week
+    <h3 className="text-sm font-semibold mb-0.5">Weekly Activity</h3>
+    <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+      Users & sessions
     </p>
-    <ResponsiveContainer width="100%" height={200}>
+    <ResponsiveContainer width="100%" height={160}>
       <BarChart data={weeklyActivity} barGap={4}>
         <CartesianGrid
           strokeDasharray="3 3"

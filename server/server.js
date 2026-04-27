@@ -30,7 +30,8 @@ const server = http.createServer(app);
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
-  'https://data-analytics-business-intelligence-45kf.onrender.com', // Your Render Frontend
+  'https://data-analytics-business-intelligence-45kf.onrender.com', 
+  'https://data-analytics-business-intelligence.onrender.com', // Added actual production URL
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
