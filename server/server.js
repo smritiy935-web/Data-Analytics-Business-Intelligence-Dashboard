@@ -6,12 +6,20 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
-// Validate critical environment variables
-const requiredEnv = ['MONGO_URI', 'JWT_SECRET', 'FRONTEND_URL'];
-requiredEnv.forEach((env) => {
+// Validate environment variables
+const criticalEnv = ['MONGO_URI', 'JWT_SECRET'];
+const corsEnv = ['FRONTEND_URL'];
+
+criticalEnv.forEach((env) => {
   if (!process.env[env]) {
-    console.error(`CRITICAL ERROR: ${env} is not defined in environment variables.`);
+    console.error(`❌ CRITICAL ERROR: ${env} is not defined. Server cannot start without it.`);
     process.exit(1);
+  }
+});
+
+corsEnv.forEach((env) => {
+  if (!process.env[env]) {
+    console.warn(`⚠️ WARNING: ${env} is not defined. Using default localhost origins for CORS.`);
   }
 });
 
